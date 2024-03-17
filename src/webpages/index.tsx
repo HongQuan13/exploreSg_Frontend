@@ -1,18 +1,20 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./access/login";
-import Register from "./access/register";
-import ShowPlace from "./place";
-import UpdatePlaceForm from "./place/edit";
-import AllPlaces from "./place/main";
-import NewPlace from "./place/new";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import UserDetail from "./profile/detail";
-import OwnedPlace from "./profile/ownedPlace";
-import PasswordChange from "./profile/passwordChange";
-import Chat from "./message/chat";
+import { Routes, Route } from "react-router-dom";
 import { ProtectedLayout } from "../layout/ProtectedLayOut";
 import { NonProtectedLayout } from "../layout/NonProtectedLayout";
+
+import ShowPlace from "./place";
+import Chat from "./message/chat";
+import NewPlace from "./place/new";
+import Login from "./access/login";
+import AllPlaces from "./place/main";
+import Register from "./access/register";
+import UserDetail from "./profile/detail";
+import UpdatePlaceForm from "./place/edit";
+import OwnedPlace from "./profile/ownedPlace";
+import PasswordChange from "./profile/passwordChange";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function Webpages() {
   return (
