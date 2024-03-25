@@ -1,71 +1,39 @@
-import axios from "axios";
-import { userInfo } from "os";
-import { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./access/login";
-import Register from "./access/register";
-import ShowPlace from "./place";
-import UpdatePlaceForm from "./place/edit";
-import AllPlaces from "./place/main";
-import NewPlace from "./place/new";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Routes, Route } from "react-router-dom";
+import { ProtectedLayout } from "../layout/ProtectedLayOut";
+import { NonProtectedLayout } from "../layout/NonProtectedLayout";
+
+import ShowPlace from "./place";
+import Chat from "./message/chat";
+import NewPlace from "./place/new";
+import Login from "./access/login";
+import AllPlaces from "./place/main";
+import Register from "./access/register";
 import UserDetail from "./profile/detail";
+import UpdatePlaceForm from "./place/edit";
 import OwnedPlace from "./profile/ownedPlace";
 import PasswordChange from "./profile/passwordChange";
-import Chat from "./message/chat";
-import { useAuthContext } from "../context/authContext";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function Webpages() {
-  const { authUser } = useAuthContext();
-  console.log(authUser, "authUser");
   return (
     <div className="">
       <Routes>
-        <Route
-          path="access/login"
-          element={authUser ? <Navigate to="/home" /> : <Login />}
-        />
-        <Route
-          path="access/register"
-          element={authUser ? <Navigate to="/home" /> : <Register />}
-        />
-        <Route
-          path="/place/new"
-          element={authUser ? <NewPlace /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/place/edit/:id"
-          element={
-            authUser ? <UpdatePlaceForm /> : <Navigate to="/access/login" />
-          }
-        />
-        <Route
-          path="/place/detail/:id"
-          element={authUser ? <ShowPlace /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/home"
-          element={authUser ? <AllPlaces /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/chat"
-          element={authUser ? <Chat /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/profile/account"
-          element={authUser ? <UserDetail /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/profile/ownedPlace"
-          element={authUser ? <OwnedPlace /> : <Navigate to="/access/login" />}
-        />
-        <Route
-          path="/profile/passwordChange"
-          element={
-            authUser ? <PasswordChange /> : <Navigate to="/access/login" />
-          }
-        />
+        <Route element={<NonProtectedLayout fallbackRoute="/home" />}>
+          <Route path="access/login" element={<Login />} />
+          <Route path="access/register" element={<Register />} />
+        </Route>
+        <Route element={<ProtectedLayout />}>
+          <Route path="/place/new" element={<NewPlace />} />
+          <Route path="/place/edit/:id" element={<UpdatePlaceForm />} />
+          <Route path="/place/detail/:id" element={<ShowPlace />} />
+          <Route path="/home" element={<AllPlaces />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/profile/account" element={<UserDetail />} />
+          <Route path="/profile/ownedPlace" element={<OwnedPlace />} />
+          <Route path="/profile/passwordChange" element={<PasswordChange />} />
+        </Route>
       </Routes>
       <ToastContainer position="bottom-right" />
     </div>

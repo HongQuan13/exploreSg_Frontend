@@ -1,12 +1,12 @@
-import axios from "axios";
-import qs from "qs";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FormAction from "../../components/access/formAction";
-import { registerFields } from "../../components/access/formFields";
-import FormInput from "../../components/access/formInput";
-import NavBar from "../../components/partials/navBar";
+import { useRegister } from "./hooks/useRegister";
 import { errorFlash, sucessFlash } from "../../core/response";
+import { registerFields } from "../../components/access/formFields";
+
+import NavBar from "../../components/partials/navBar";
+import FormInput from "../../components/access/formInput";
+import FormAction from "../../components/access/formAction";
 
 interface FieldsState {
   [key: string]: string;
@@ -18,9 +18,19 @@ fields.forEach((field) => (fieldsState[field.id] = ""));
 function Register() {
   const [registerState, setRegisterState] = useState(fieldsState);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const { mutate: register, isPending } = useRegister({
+    onSuccess: () => {
+      sucessFlash("Register new account successfull, pls login to continue!");
+      navigate("/access/login");
+    },
+    onError: (error: any) => {
+      errorFlash(error.response.data.message);
+      console.error("Error:", error.response);
+    },
+  });
+
   useEffect(() => {
     setIsFormValid(areAllInputsValid());
     console.log(isFormValid);
@@ -45,39 +55,11 @@ function Register() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (isFormValid) {
-      setIsSubmitting(true);
-      try {
-        const registerData = {
-          email: registerState.email,
-          password: registerState.password,
-          username: registerState.username,
-        };
-        const registerResponse = await axios.post(
-          `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/v1/api/access/register`,
-          qs.stringify(registerData),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "Access-Control-Allow-Origin": "*",
-            },
-            withCredentials: true,
-          }
-        );
-        console.log(registerResponse);
-
-        if (registerResponse.status === 201) {
-          sucessFlash(
-            "Register new account successfull, pls login to continue!"
-          );
-          navigate("/access/login");
-        }
-        setIsSubmitting(false);
-      } catch (error: any) {
-        setIsSubmitting(false);
-
-        errorFlash(error.response.data.message);
-        console.error("Error:", error.response);
-      }
+      register({
+        email: registerState.email,
+        password: registerState.password,
+        username: registerState.username,
+      });
     }
   };
   return (
@@ -129,7 +111,7 @@ function Register() {
                   handleSubmit={handleSubmit}
                   text="Register"
                   customClass="group-invalid:pointer-events-none group-invalid:opacity-30"
-                  disabled={isSubmitting}
+                  disabled={isPending}
                 />
               </form>
             </div>

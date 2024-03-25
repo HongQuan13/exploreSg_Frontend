@@ -1,14 +1,14 @@
-import axios from "axios";
-import e from "express";
-import qs from "qs";
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import FormAction from "../../components/access/formAction";
-import { loginFields } from "../../components/access/formFields";
-import FormInput from "../../components/access/formInput";
-import NavBar from "../../components/partials/navBar";
-import { errorFlash, sucessFlash } from "../../core/response";
+import { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useLogin } from "./hooks/useLogin";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
+import { errorFlash, sucessFlash } from "../../core/response";
+import { loginFields } from "../../components/access/formFields";
+
+import NavBar from "../../components/partials/navBar";
+import FormInput from "../../components/access/formInput";
+import FormAction from "../../components/access/formAction";
 
 interface FieldsState {
   [key: string]: string;
@@ -21,8 +21,21 @@ function Login() {
   const [loginState, setLoginState] = useState(fieldsState);
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { setAuthUser } = useAuthContext();
+  const { mutate: login, isPending } = useLogin({
+    onSuccess: (data) => {
+      const loginResponse = data as AxiosResponse<any, any>;
+      sucessFlash("Login successfull!");
+      const userInfo = loginResponse.data.metadata;
+      localStorage.setItem("user-info", JSON.stringify(userInfo));
+      setAuthUser(userInfo);
+      navigate("/home");
+    },
+    onError: (error: any) => {
+      errorFlash(error.response.data.infor.message);
+      console.error("Error:", error.response);
+    },
+  });
 
   useEffect(() => {
     setIsFormValid(areAllInputsValid());
@@ -45,37 +58,10 @@ function Login() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (isFormValid) {
-      setIsSubmitting(true);
-      try {
-        const loginData = {
-          email: loginState.email,
-          password: loginState.password,
-        };
-        const loginResponse = await axios.post(
-          `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/v1/api/access/login`,
-          qs.stringify(loginData),
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "Access-Control-Allow-Origin": "*",
-            },
-            withCredentials: true,
-          }
-        );
-        console.log(loginResponse, "loginResponse");
-        if (loginResponse.status === 200) {
-          sucessFlash("Login successfull!");
-          const userInfo = loginResponse.data.metadata;
-          localStorage.setItem("user-info", JSON.stringify(userInfo));
-          setAuthUser(userInfo);
-          navigate("/home");
-        }
-        setIsSubmitting(false);
-      } catch (error: any) {
-        setIsSubmitting(false);
-        errorFlash(error.response.data.infor.message);
-        console.error("Error:", error.response);
-      }
+      login({
+        email: loginState.email,
+        password: loginState.password,
+      });
     }
   };
   return (
@@ -110,7 +96,7 @@ function Login() {
               handleSubmit={handleSubmit}
               text="Login"
               customClass="group-invalid:pointer-events-none group-invalid:opacity-30"
-              disabled={isSubmitting}
+              disabled={isPending}
             />
           </form>
         </div>
