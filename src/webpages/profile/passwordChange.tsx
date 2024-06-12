@@ -6,6 +6,7 @@ import NavBar from "../../components/partials/navBar";
 import { passwordFields } from "../../components/profile/formFields";
 import FormInput from "../../components/profile/formInput";
 import ProfileOption from "../../components/partials/profileOption";
+import { useAuthContext } from "../../context/authContext";
 
 interface FormState {
   [key: string]: any;
@@ -24,16 +25,7 @@ fields.forEach((field) => (fieldsState[field.id] = ""));
 const PasswordChange = () => {
   const [formState, setFormState] = useState<FormState>(fieldsState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [user, setUser] = useState<User>(
-    {
-      id: "",
-      username: "",
-      email: "",
-    } || null
-  );
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user-info") || ""));
-  }, []);
+  const user = useAuthContext();
 
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.id]: e.target.value });

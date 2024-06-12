@@ -18,7 +18,6 @@ export const useRegister = (options: DefaultMutationOptions = {}) => {
         qs.stringify(registerData)
       );
 
-      console.log(registerResponse, "loginResponse");
       return registerResponse;
     },
     ...options,

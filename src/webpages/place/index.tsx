@@ -7,6 +7,7 @@ import StarRating from "../../components/review/starReview";
 import qs from "qs";
 import ReviewSection from "../../components/review/review";
 import ImageCard from "../../components/images/imageCard";
+import { useAuthContext } from "../../context/authContext";
 
 interface PlaceData {
   place_title: string;
@@ -36,11 +37,7 @@ const ShowPlace = () => {
   const [starCount, setStarCount] = useState(4);
   const [comment, setComment] = useState("");
   const [existedComments, setExistedComment] = useState<Review[]>([]);
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    setUser(localStorage.getItem("user-info"));
-  }, []);
+  const user = useAuthContext();
   useEffect(() => {
     console.log("Location:", location);
     console.log("ID:", id);

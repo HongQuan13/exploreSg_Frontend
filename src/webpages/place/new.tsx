@@ -6,6 +6,7 @@ import NavBar from "../../components/partials/navBar";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import { errorFlash, sucessFlash } from "../../core/response";
+import { useAuthContext } from "../../context/authContext";
 
 interface FieldsState {
   [key: string]: any;
@@ -31,16 +32,7 @@ function NewPlaceForm() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [user, setUser] = useState<User>(
-    {
-      id: "",
-      username: "",
-      email: "",
-    } || null
-  );
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user-info") || ""));
-  }, []);
+  const user = useAuthContext();
 
   useEffect(() => {
     setIsFormValid(areAllInputsValid());

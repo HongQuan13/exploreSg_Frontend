@@ -7,7 +7,6 @@ interface IProps {
 
 export const NonProtectedLayout = ({ fallbackRoute }: IProps) => {
   const { authUser } = useAuthContext();
-  console.log(authUser, "authUser");
 
   if (authUser) {
     return <Navigate to={fallbackRoute} />;

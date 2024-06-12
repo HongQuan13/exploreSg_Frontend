@@ -27,13 +27,11 @@ function UpdatePlaceForm() {
   const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
-    console.log("ID:", id);
     detailAPI();
   }, [id]);
 
   useEffect(() => {
     setIsFormValid(areAllInputsValid());
-    console.log(isFormValid);
   }, [formState]);
 
   const areAllInputsValid = () => {
@@ -57,7 +55,6 @@ function UpdatePlaceForm() {
         (file: any, i: any) => i !== index
       ),
     }));
-    console.log(formState, "formState");
   };
   async function detailAPI() {
     try {
@@ -72,7 +69,6 @@ function UpdatePlaceForm() {
           withCredentials: true,
         }
       );
-      console.log("Return place details successful", detailItem.data.metadata);
       setFormState(detailItem.data.metadata);
       setOldImages(detailItem.data.metadata.place_images);
     } catch (error: any) {
@@ -92,13 +88,10 @@ function UpdatePlaceForm() {
       ...prevState,
       place_images: [...prevState.place_images, ...files],
     }));
-    console.log(formState, "formState");
   };
   const hanldeSubmit = async (event: any) => {
     event.preventDefault();
     if (isFormValid) {
-      console.log(formState, "formState");
-
       setIsSubmitting(true);
       const formData = new FormData();
       let deletedImages = [];

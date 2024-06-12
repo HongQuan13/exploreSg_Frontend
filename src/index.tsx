@@ -7,6 +7,7 @@ import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.css";
+import { SocketContextProvider } from "./context/socketContext";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ root.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <AuthContextProvider>
-        <App />
+        <SocketContextProvider>
+          <App />
+        </SocketContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   </QueryClientProvider>

@@ -70,11 +70,6 @@ function Mapbox() {
     }
   }, [mapRef.current]);
 
-  console.log(points, "points");
-  console.log(bounds, "bounds");
-  console.log(clusters, "clusters");
-  console.log(supercluster, "supercluster");
-
   return (
     <div className="">
       <Map

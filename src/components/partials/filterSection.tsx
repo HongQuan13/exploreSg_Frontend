@@ -21,16 +21,6 @@ function Filter({
             onChange={handleChange}
           />
         </div>
-        {/* <div className="border-b border-gray-200 py-6">
-          <label htmlFor="location" className="w-full text-gray-400">
-            Location
-          </label>
-          <input
-            type="text"
-            id="location"
-            className="border border-gray-300 rounded-md w-full py-2 px-3 focus:outline-none focus:border-indigo-500"
-          />
-        </div> */}
         <div className="border-b border-gray-200 py-6">
           <label className="w-full text-gray-400">Location</label>
           <div className="flex flex-col items-center justify-between w-full space-x-2 space-y-2">
@@ -64,16 +54,6 @@ function Filter({
             />
           </div>
         </div>
-        {/* <div className="border-b border-gray-200 py-6">
-          <h3 className="-my-3">
-            <label htmlFor="rating" className="w-full text-gray-400">
-              Rating
-            </label>
-          
-            <div id="rating" className="w-full"></div>
-          </h3>
-        </div> */}
-
         <div className="border-b border-gray-200 py-6">
           <div className="w-full">
             <label htmlFor="sortOption" className="w-full text-gray-400">
@@ -95,7 +75,6 @@ function Filter({
             </select>
           </div>
         </div>
-
         <FormAction
           handleSubmit={handleSubmit}
           action="submit"

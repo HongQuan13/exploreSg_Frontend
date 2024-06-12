@@ -6,6 +6,7 @@ import NavBar from "../../components/partials/navBar";
 import { profileFields } from "../../components/profile/formFields";
 import FormInput from "../../components/profile/formInput";
 import ProfileOption from "../../components/partials/profileOption";
+import { useAuthContext } from "../../context/authContext";
 
 interface FormState {
   [key: string]: any;
@@ -23,32 +24,8 @@ fields.forEach((field) => (fieldsState[field.id] = ""));
 
 const UserDetail = () => {
   const [formState, setFormState] = useState<FormState>(fieldsState);
-  const [user, setUser] = useState<User>({
-    id: "",
-    username: "",
-    email: "",
-  });
+  const user = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const getUser = async () => {
-    try {
-      const respponse = await axios.post(
-        `http://localhost:${process.env.REACT_APP_BACKEND_PORT}/v1/api/access/currentUser`,
-        null,
-        {
-          withCredentials: true,
-        }
-      );
-      const { authenticated, userData } = respponse.data;
-      console.log(authenticated, userData);
-      if (authenticated) {
-        setUser(userData);
-        setFormState(userData);
-      }
-    } catch (error: any) {
-      console.log(error.response);
-    }
-  };
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.id]: e.target.value });
   };

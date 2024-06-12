@@ -13,22 +13,7 @@ interface User {
 
 function NavBar() {
   const navigate = useNavigate();
-  const [currentUser, setUser] = useState<User | null>(
-    {
-      id: "",
-      username: "",
-      email: "",
-    } || null
-  );
-
-  useEffect(() => {
-    const userInfo = localStorage.getItem("user-info");
-    if (userInfo) {
-      setUser(JSON.parse(userInfo));
-    } else {
-      setUser(null);
-    }
-  }, []);
+  const currentUser = useAuthContext();
 
   const [userDropDown, setuserDropDown] = useState(false);
   const { setAuthUser } = useAuthContext();
@@ -61,9 +46,8 @@ function NavBar() {
       console.error("Error:", error.stack);
     }
   };
-  console.log(currentUser, "in navbar");
   return (
-    <nav className="bg-gray-700">
+    <nav className="bg-gray-700 sticky top-0 z-30">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <a href="/home" className="text-white text-lg font-bold">

@@ -1,23 +1,25 @@
-import axios from "axios";
-import NavBar from "../../components/partials/navBar";
-import { useEffect, useState } from "react";
-import ChatSideBar from "../../components/message/sidebar";
 import ChatContent from "../../components/message/chatContent";
+import ChatSideBar from "../../components/message/sidebar";
+import NavBar from "../../components/partials/navBar";
+import useGetConversation from "./hooks/useGetConversation";
+import useGetPeople from "./hooks/useGetPeople";
 
 function Chat() {
-  const [user, setUser] = useState<any>(null);
+  const allConversations = useGetConversation();
+  const allPeople = useGetPeople();
 
-  useEffect(() => {
-    setUser(localStorage.getItem("user-info"));
-  }, []);
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <NavBar />
-      <div className="flex flex-row items-center justify-center border-4 mx-20 my-20 p-10">
-        <ChatSideBar customClass="w-1/3" />
-        <ChatContent customClass="w-2/3 bg-red-200" />
+      <div className="h-screen w-full flex antialiased text-gray-700 bg-gray-100 overflow-hidden mt-100px">
+        <div className="flex-1 flex flex-col">
+          <main className="flex-grow flex flex-row min-h-0">
+            <ChatSideBar />
+            <ChatContent />
+          </main>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -14,11 +14,10 @@ export const useLogin = (options: DefaultMutationOptions = {}) => {
     mutationKey: ["login"],
     mutationFn: async (loginData: ILoginData) => {
       const loginResponse = await axiosClient.post(
-        `${process.env.REACT_APP_BASE_URL}/access/login`,
+        "/access/login",
         qs.stringify(loginData)
       );
 
-      console.log(loginResponse, "loginResponse");
       return loginResponse;
     },
     ...options,

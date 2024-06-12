@@ -72,7 +72,6 @@ function Mapbox({ placeDatas }: { placeDatas: any[] }) {
   };
   const handleMove = (evt: any) => {
     // setViewport(evt);
-    // console.log(evt);
     const { latitude, longitude, zoom } = evt.viewState;
     setViewport((prevViewport) => ({
       ...prevViewport,

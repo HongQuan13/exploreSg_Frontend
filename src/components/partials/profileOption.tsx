@@ -1,12 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 
 const ProfileOption = (user: any) => {
-  console.log(
-    user.user,
-    user.username,
-    user.email,
-    "testing in the profile option"
-  );
   return (
     <>
       <div className="flex flex-col items-center">

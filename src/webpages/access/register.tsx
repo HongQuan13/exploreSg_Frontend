@@ -33,7 +33,6 @@ function Register() {
 
   useEffect(() => {
     setIsFormValid(areAllInputsValid());
-    console.log(isFormValid);
   }, [registerState]);
 
   const areAllInputsValid = () => {

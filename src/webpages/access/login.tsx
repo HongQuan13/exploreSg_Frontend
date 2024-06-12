@@ -39,7 +39,6 @@ function Login() {
 
   useEffect(() => {
     setIsFormValid(areAllInputsValid());
-    console.log(isFormValid);
   }, [loginState]);
 
   const areAllInputsValid = () => {

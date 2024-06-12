@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import NavBar from "../../components/partials/navBar";
 import PlaceCard from "../../components/places/placeCard";
 import ProfileOption from "../../components/partials/profileOption";
+import { useAuthContext } from "../../context/authContext";
 interface User {
   id: string;
   username: string;
@@ -11,16 +12,7 @@ interface User {
 
 const OwnedPlace = () => {
   const [ownedPlaceData, setOwnedPlace] = useState<any[]>([]);
-  const [user, setUser] = useState<User>(
-    {
-      id: "",
-      username: "",
-      email: "",
-    } || null
-  );
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user-info") || ""));
-  }, []);
+  const user = useAuthContext();
 
   useEffect(() => {
     ownedPlace();
